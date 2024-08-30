@@ -97,7 +97,7 @@ If the site sets `required` to `true` in the root element, it indicates that the
 
 **Example**:
 
-```json
+```json5
 {
 "categories": [
     {
@@ -111,10 +111,10 @@ If the site sets `required` to `true` in the root element, it indicates that the
                 "domain": "`[`partner1.com`](http://partner1.com)`",
                 "description": "...."
             },
-            ...
+            // ...
         ]
     },
-...
+    // ...
 ]
 }
 ```
@@ -138,11 +138,11 @@ The `AskForPreferences` function returns a similar (or even the same) object, wi
 
 Top-level `consent` is set to `allow`, so, all other elements should be ignored
 
-```json
+```json5
 {
     "consent": "allow"
     "categories": [
-        ....
+        // ...
     ]
 }
 ```
@@ -153,20 +153,20 @@ Top-level consent is set to custom, so, it is required to traverse child element
 
 User allowed "Required" cookies cagtegory and denied "Advertisement" category.
 
-```json
+```json5
 {
     "consent": "custom"
     "categories": [
         {
         "consent" : "allow":
         "name": "Required",
-        ...
+        // ...
         },
         {
         "name": "Advertisement":
         "consent" : "deny":
         },
-        ...
+        // ...
     ]
 }
 ```
@@ -178,7 +178,7 @@ Top-level consent is set to custom, so, it is required to traverse child element
 
 Consent in "Required" cookies category also set to custom, therefore, user chose specific companies. In the example below, they chose to allow cookies from company "Parther1" and deny cookies from company "Parther2":
 
-```json
+```json5
 {
     "consent": "custom"
     "categories": [
@@ -194,10 +194,10 @@ Consent in "Required" cookies category also set to custom, therefore, user chose
                 "name": "partner2",
                 "consent": "deny"
                 },
-                ...
+                // ...
             ]
         },
-        ...
+        // ...
     ]
 }
 ```
