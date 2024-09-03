@@ -1,0 +1,27 @@
+body {
+	font-size: 18px;
+	font-family: arial, sans-serif;
+	line-height: 120%;
+}
+
+.gradient-bg {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.log {
+	background: rgba(255, 255, 255, .4);
+	border: 1px solid rgba(0, 0, 0, .16);
+	padding: 60px 40px;
+	border-radius: 24px;
+	width: 90%;
+	max-width: 600px;
+	min-height: 300px;
+}
