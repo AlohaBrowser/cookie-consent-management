@@ -45,24 +45,17 @@ The **website** queries the **browser** to determine if it supports advanced coo
 * If the **browser** lacks support, the **website** displays a standard cookie consent dialog as per conventional practices.
 * If the **browser** supports cookie management features, the **website** retrieves the user’s stored cookie preferences from the browser.
 
-**3\. Preference Handling:**
+**5\. Browser Consent Dialog:**
 
-The website processes the retrieved preferences.
-
-* If a preference such as `allowAll`, `denyAll`, or similar is detected, the website applies the corresponding settings and continues operation without further user interaction.
-* If the preference is `askEveryTime`, the website transmits information about the cookie categories and their intended purposes to the browser.
-
-**4\. Browser Consent Dialog:**
-
-The browser displays a consent dialog to the user, incorporating the information provided by the website about the specific cookie categories.
+If needed, the browser displays a consent dialog to the user, incorporating the information provided by the website about the specific cookie categories.
 
 <img src="pic1.png" width="50%"/>
 
-**5\. User Choice Communication:**
+**6\. User Choice Communication:**
 
 The user's consent decision is communicated back to the website, which then applies the chosen settings to the website’s operation.
 
-**6\. Future Visit Preferences:**
+**7\. Future Visit Preferences:**
 
 The browser may store the user's decision for future interactions with the website. In subsequent visits, the browser may use the "allowCustom" preference to relay the saved settings back to the website, streamlining the consent process.
 
@@ -74,45 +67,7 @@ The `cookiesConsentManager` object is introduced in the `globalThis` scope to al
 
 ---
 
-### Object Overview
-
-The `cookiesConsentManager` object includes:
-
-* **Properties:**
-  * `consentPreferences`: A property reflecting the user’s global cookie preferences.
-  * `consentMode`: A string representing the user's preferred interaction method with cookies.
-
-* **Methods:**
-  * `AskForPreferences(SelectableCookies selectableCookies): ConsentResult`
-    * Prompts the user to specify their preferences when `consentMode` is set to `askEveryTime`.
-
----
-
-### Properties
-
-#### `consentPreferences`
-
-This property stores the user’s global cookie preferences. It can have one of the following values:
-
-```javascript
-const consentValues = {
-    ASK_EVERY_TIME: "askEveryTime",
-    DENY_ALL: "denyAll",
-    ALLOW_ALL: "allowAll",
-    ALLOW_CUSTOM: "allowCustom"
-};
-```
-
-* **`askEveryTime`**: The browser will prompt the user each time a website requests cookie permissions.
-* **`denyAll`**: The browser will deny all cookies by default.
-* **`allowAll`**: The browser will accept all cookies by default.
-* **`allowCustom`**: The user has specified detailed preferences for cookie categories and/or specific partners.
-
-#### `consentMode`
-
-Indicates the current consent interaction mode of the user. It directly reflects the user’s setting in the browser’s privacy controls.
-
----
+### cookiesConsentManager API Overview
 
 ### Methods
 
@@ -122,7 +77,7 @@ Indicates the current consent interaction mode of the user. It directly reflects
 AskForPreferences(SelectableCookies selectableCookies): ConsentResult
 ```
 
-**Description**: This method is called when the `consentMode` is set to `askEveryTime`. It allows the browser to prompt the user with a dialog for setting their cookie preferences.
+**Description**: Asks browser to return cookie preferences. The browser may or may not show dialog to user (depends on settings).
 
 * **Parameters**:
   * `selectableCookies`: An object describing the available cookie categories and optionally the companies associated with each category. It includes:
