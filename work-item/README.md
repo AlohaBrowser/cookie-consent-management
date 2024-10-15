@@ -81,11 +81,14 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
 
 * **Parameters**:
   * `selectableCookies`: An object describing the available cookie categories and optionally the companies associated with each category. It includes:
+    * `version`: (String, Required) A string that contains the version identifier for selectableCookies. When the site passes a selectableCookies object to the askForPreferences function, and the browser has a saved value, it compares the versions. If they differ, the browser will prompt the user for cookie consent again.
     * `categories`: An array of objects, each representing a cookie category:
+      * `id`: Optional string that should not be interpreted in any way. The browser must retain it and return it to the site as a property of the category. This allows the site to identify categories without relying on name comparison.
       * `name`: The category name (e.g., "Required", "Analytics").
       * `description`: (Optional) A description of the cookie category.
       * `required`: (Boolean, Optional) Indicates if the category is essential for the website's operation. Default is `false`.
       * `partners`: (Optional) An array of objects representing third-party companies using cookies in this category:
+        * `id`: Optional string that should not be interpreted in any way. The browser must retain it and return it to the site as a property of the partner. This allows the site to identify partners without relying on name comparison.
         * `name`: The company's name.
         * `domain`: The company's domain.
         * `description`: A brief description of the company's use of cookies.
