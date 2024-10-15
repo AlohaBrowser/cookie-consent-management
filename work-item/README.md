@@ -71,10 +71,10 @@ The `cookiesConsentManager` object is introduced in the `globalThis` (`windows` 
 
 ### Methods
 
-#### `AskForPreferences`
+#### `askForPreferences`
 
 ```javascript
-async AskForPreferences(SelectableCookies selectableCookies) -> Promise<SelectableCookies>
+async askForPreferences(SelectableCookies selectableCookies) -> Promise<SelectableCookies>
 ```
 
 **Description**: Asks browser to return cookie preferences. The browser may or may not show dialog to user (depends on browser settings, site has no control here).
@@ -91,7 +91,7 @@ async AskForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
         * `domain`: The company's domain.
         * `description`: A brief description of the company's use of cookies.
 
-* **Returns**: The `AskForPreferences` function returns promise, than resolves a similar to `SelectableCookies` (or even the same) object, with an added `consent` field for each item representing the user's consent decisions for each category or company .
+* **Returns**: The `askForPreferences` function returns promise, than resolves a similar to `SelectableCookies` (or even the same) object, with an added `consent` field for each item representing the user's consent decisions for each category or company .
 
 **Notes:**
 
