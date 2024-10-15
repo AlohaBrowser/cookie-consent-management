@@ -63,7 +63,7 @@ The browser may store the user's decision for future interactions with the websi
 
 ### Specification for `cookiesConsentManager` Object
 
-The `cookiesConsentManager` object is introduced in the `globalThis` scope to allow websites to interact with user-defined cookie preferences. It provides a standardized way to handle consent directly from the browser, giving users greater control over their privacy while maintaining compliance with privacy regulations like GDPR.
+The `cookiesConsentManager` object is introduced in the `globalThis` (`windows` in browser) scope to allow websites to interact with user-defined cookie preferences. It provides a standardized way to handle consent directly from the browser, giving users greater control over their privacy while maintaining compliance with privacy regulations like GDPR.
 
 ---
 
@@ -74,31 +74,32 @@ The `cookiesConsentManager` object is introduced in the `globalThis` scope to al
 #### `AskForPreferences`
 
 ```javascript
-AskForPreferences(SelectableCookies selectableCookies): ConsentResult
+async AskForPreferences(SelectableCookies selectableCookies) -> Promise<SelectableCookies>
 ```
 
-**Description**: Asks browser to return cookie preferences. The browser may or may not show dialog to user (depends on settings).
+**Description**: Asks browser to return cookie preferences. The browser may or may not show dialog to user (depends on browser settings, site has no control here).
 
 * **Parameters**:
   * `selectableCookies`: An object describing the available cookie categories and optionally the companies associated with each category. It includes:
     * `categories`: An array of objects, each representing a cookie category:
       * `name`: The category name (e.g., "Required", "Analytics").
-      * `description`: A description of the cookie category.
-      * `supportCustom`: (Boolean) Whether the category supports custom preferences. Default is `true`.
-      * `required`: (Boolean) Indicates if the category is essential for the website's operation. Default is `false`.
+      * `description`: (Optional) A description of the cookie category.
+      * `supportCustom`: (Boolean, Optional) Whether the category supports custom preferences. Default is `true`.
+      * `required`: (Boolean, Optional) Indicates if the category is essential for the website's operation. Default is `false`.
       * `partners`: (Optional) An array of objects representing third-party companies using cookies in this category:
         * `name`: The company's name.
         * `domain`: The company's domain.
         * `description`: A brief description of the company's use of cookies.
 
+* **Returns**: The `AskForPreferences` function returns promise, than resolves a similar to `SelectableCookies` (or even the same) object, with an added `consent` field for each item representing the user's consent decisions for each category or company .
+
 **Notes:**
 
 1. If a website **does not** support custom selection for certain cookie categories, it should indicate this by setting the `supportCustom` property to `false`. The default value for this property is `true`.
-2. When `supportCustom` is set to `false` for a particular category, the browser should restrict the user from choosing any options other than "allow all" or "deny all" for that category. This ensures that the user's choices are consistent with the website's supported functionality.
-3. If a specific category is crucial for the site, the site can set `required` to `true`, and the browser must not allow this category to be unchecked. The default value is `false`.
-4. If the site sets `required` to `true` in the root element, it indicates that the site cannot function without cookies, and the user must either accept them or leave the site.
-
-* **Returns**: The `AskForPreferences` function returns a similar to `SelectableCookies` (or even the same) object, with an added `consent` field for each item representing the user's consent decisions for each category or company .
+<br>When `supportCustom` is set to `false` for a particular category, the browser must restrict the user from choosing any options other than "allow all" or "deny all" for that category. This ensures that the user's choices are consistent with the website's supported functionality.
+2. If a specific category is crucial for the site, the site can set `required` to `true`, and the browser must not allow this category to be unchecked. The default value is `false`.
+3. If the site sets `required` to `true` in the root element, it indicates that the site cannot function without cookies, and the user must either accept them or leave the site.
+4. If the browser allows the user to close the consent dialog without making a choice, it should be treated as `Deny all`.
 
 <br><br>
 ***`SelectableCookies` example***
@@ -127,7 +128,7 @@ AskForPreferences(SelectableCookies selectableCookies): ConsentResult
 
 ---
 
-### Returned object
+### Returned object details
 
 The returned object contains the user's decisions about cookie consent. It includes a `consent` field, which can have the following values:
 
@@ -163,6 +164,7 @@ The returned object contains the user's decisions about cookie consent. It inclu
            {
                "name": "Required",
                "consent": "allow",
+               "required": true,
                "description": "Essential cookies for site functionality."
            },
            {
@@ -202,15 +204,13 @@ The returned object contains the user's decisions about cookie consent. It inclu
 
 ---
 
-### Behavior and Integration
-
-* **Website Interaction**: Websites can access the `cookiesConsentManager` object via JavaScript to determine the user’s cookie preferences and adjust their behavior accordingly. For example, a website could use `cookiesConsentManager.consentPreferences` to determine if cookies should be enabled or disabled based on the user’s global preferences.
+### Behavior and Integration Notes
   
-* **API Accessibility**: Similar to the `ethereum` object for blockchain interactions, the `cookiesConsentManager` object is accessible from the `globalThis` scope, making it easy for websites to query consent preferences.
+* **API Accessibility**: Similar to the `ethereum` object for blockchain interactions, the `cookiesConsentManager` object is accessible from the `globalThis` (`window`) scope, making it easy for websites to query consent preferences. The browser must ensure, that the object is accessible from IFRAMEs.
 
-* **Compliance**: The `cookiesConsentManager` ensures compliance with regulations like GDPR by allowing websites to accurately reflect the user's choices and providing audit trails of consent history through the browser interface.
+* **Consent expiration**: Any consent given by the user must expire **at least** once a quarter.
 
-This approach allows users to manage their privacy preferences efficiently, while websites can easily integrate with the browser's consent mechanisms, enhancing user control and transparency in cookie management.
+* **Subdomains**: Each consent must be associated with one domain only. It is prohibited to extend consents given on one domain to other domains or subdomains of that domain.
 
 ### Optional Features
 
