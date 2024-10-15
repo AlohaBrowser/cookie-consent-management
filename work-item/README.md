@@ -95,7 +95,7 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
 **Notes:**
 
 1. If required is set to true for a node, it means that required is also explicitly set to true for all its children.
-   Therefore, if the site sets `required` to `true` in the root element, it indicates that the site cannot function without cookies, and the user must either accept them or leave the site.
+<br>Therefore, if the site sets `required` to `true` in the root element, it indicates that the site cannot function without cookies, and the user must either accept them or leave the site.
 2. If the browser allows the user to close the consent dialog without making a choice, it should be treated as `Deny all`.
 
 <br><br>
