@@ -84,7 +84,6 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
     * `categories`: An array of objects, each representing a cookie category:
       * `name`: The category name (e.g., "Required", "Analytics").
       * `description`: (Optional) A description of the cookie category.
-      * `supportCustom`: (Boolean, Optional) Whether the category supports custom preferences. Default is `true`.
       * `required`: (Boolean, Optional) Indicates if the category is essential for the website's operation. Default is `false`.
       * `partners`: (Optional) An array of objects representing third-party companies using cookies in this category:
         * `name`: The company's name.
@@ -95,11 +94,9 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
 
 **Notes:**
 
-1. If a website **does not** support custom selection for certain cookie categories, it should indicate this by setting the `supportCustom` property to `false`. The default value for this property is `true`.
-<br>When `supportCustom` is set to `false` for a particular category, the browser must restrict the user from choosing any options other than "allow all" or "deny all" for that category. This ensures that the user's choices are consistent with the website's supported functionality.
-2. If a specific category is crucial for the site, the site can set `required` to `true`, and the browser must not allow this category to be unchecked. The default value is `false`.
-3. If the site sets `required` to `true` in the root element, it indicates that the site cannot function without cookies, and the user must either accept them or leave the site.
-4. If the browser allows the user to close the consent dialog without making a choice, it should be treated as `Deny all`.
+1. If required is set to true for a node, it means that required is also explicitly set to true for all its children.
+   Therefore, if the site sets `required` to `true` in the root element, it indicates that the site cannot function without cookies, and the user must either accept them or leave the site.
+2. If the browser allows the user to close the consent dialog without making a choice, it should be treated as `Deny all`.
 
 <br><br>
 ***`SelectableCookies` example***
@@ -110,7 +107,6 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
     {
         "name": "Required",
         "description": "...",
-        "supportCustom": false,
         "required": false,
         "partners": [
             {
