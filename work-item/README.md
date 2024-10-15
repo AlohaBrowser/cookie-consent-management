@@ -89,14 +89,9 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
         * `name`: The company's name.
         * `domain`: The company's domain.
         * `description`: A brief description of the company's use of cookies.
+        * `required`: (Boolean, Optional) Indicates if the partner is essential for the website's operation. Default is `false`.
 
 * **Returns**: The `askForPreferences` function returns promise, than resolves a similar to `SelectableCookies` (or even the same) object, with an added `consent` field for each item representing the user's consent decisions for each category or company .
-
-**Notes:**
-
-1. If `required` is set to `true` for a node, it means that required is also explicitly set to true for all its children.
-<br>Therefore, if the site sets `required` to `true` in the root element, it indicates that the site cannot function without cookies, and the user must either accept them or leave the site.
-2. If the browser allows the user to close the consent dialog without making a choice, it should be treated as `Deny all`.
 
 <br><br>
 ***`SelectableCookies` example***
@@ -112,7 +107,7 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
             {
                 "name": "partner1",
                 "domain": "partner1.com"
-                "description": "...."
+                "description": "Partner1 desc"
             },
             // ...
         ]
@@ -207,6 +202,8 @@ The returned object contains the user's decisions about cookie consent. It inclu
 * **Consent expiration**: Any consent given by the user must expire **at least** once a quarter.
 
 * **Subdomains**: Each consent must be associated with one domain only. It is prohibited to extend consents given on one domain to other domains or subdomains of that domain.
+
+* **Consent dialog closing** : If the browser allows the user to close the consent dialog without making a choice, it should be treated as `Deny all`.
 
 ### Optional Features
 
