@@ -88,12 +88,14 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
       * `name`: The category name (e.g., "Required", "Analytics").
       * `description`: (Optional) A description of the cookie category.
       * `required`: (Boolean, Optional) Indicates if the category is essential for the website's operation. Default is `false`.
+      * `selectedByDefault`: (Boolean, Optional) Indicates if the category should be pre-selected on Customize screen. Cannot be used if `required` is `true`. Default is `false`.
       * `partners`: (Optional) An array of objects representing third-party companies using cookies in this category:
         * `id`: Optional string that should not be interpreted in any way. The browser must retain it and return it to the site as a property of the partner. This allows the site to identify partners without relying on name comparison.
         * `name`: The company's name.
         * `domain`: The company's domain.
         * `description`: A brief description of the company's use of cookies.
         * `required`: (Boolean, Optional) Indicates if the partner is essential for the website's operation. Default is `false`.
+        * `selectedByDefault`: (Boolean, Optional) Indicates if the partner should be pre-selected on Customize screen. Cannot be used if `required` is `true`. Default is `false`.
 
 * **Returns**: The `askForPreferences` function returns promise, than resolves a similar to `SelectableCookies` (or even the same) object, with an added `consent` field for each item representing the user's consent decisions for each category or company .
 
