@@ -211,6 +211,10 @@ The returned object contains the user's decisions about cookie consent. It inclu
 
 * **Consent dialog closing** : If the browser allows the user to close the consent dialog without making a choice, it should be treated as `Deny all`.
 
+* **If users deselect all partners** but keep the category itself selected, the return value should be custom for the category and deny for every partner. This is not the same as unselecting the category.
+
+* **In case of error** the promise must either be rejected with an error message or resolved with the value `"consent": "deny?"` in the root element.
+
 ### Optional Features
 
 #### Non-Compliance Notifications
