@@ -45,17 +45,17 @@ The **website** queries the **browser** to determine if it supports advanced coo
 * If the **browser** lacks support, the **website** displays a standard cookie consent dialog as per conventional practices.
 * If the **browser** supports cookie management features, the **website** retrieves the user’s stored cookie preferences from the browser.
 
-**5\. Browser Consent Dialog:**
+**3\. Browser Consent Dialog:**
 
 If needed, the browser displays a consent dialog to the user, incorporating the information provided by the website about the specific cookie categories.
 
 <img src="pic1.png" width="50%"/>
 
-**6\. User Choice Communication:**
+**4\. User Choice Communication:**
 
 The user's consent decision is communicated back to the website, which then applies the chosen settings to the website’s operation.
 
-**7\. Future Visit Preferences:**
+**5\. Future Visit Preferences:**
 
 The browser may store the user's decision for future interactions with the website. In subsequent visits, the browser may use the "allowCustom" preference to relay the saved settings back to the website, streamlining the consent process.
 
