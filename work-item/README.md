@@ -57,13 +57,13 @@ The user's consent decision is communicated back to the website, which then appl
 
 **5\. Future Visit Preferences:**
 
-The browser may store the user's decision for future interactions with the website. In subsequent visits, the browser may use the "allowCustom" preference to relay the saved settings back to the website, streamlining the consent process.
+The browser may store the user's decision for future interactions with the website. 
 
 ### Mandatory Part
 
 ### Specification for `cookiesConsentManager` Object
 
-The `cookiesConsentManager` object is introduced in the `globalThis` (`windows` in browser) scope to allow websites to interact with user-defined cookie preferences. It provides a standardized way to handle consent directly from the browser, giving users greater control over their privacy while maintaining compliance with privacy regulations like GDPR.
+The `cookiesConsentManager` object is introduced in the `globalThis` (`window` in browser) scope to allow websites to interact with user-defined cookie preferences. It provides a standardized way to handle consent directly from the browser, giving users greater control over their privacy while maintaining compliance with privacy regulations like GDPR.
 
 ---
 
@@ -74,7 +74,7 @@ The `cookiesConsentManager` object is introduced in the `globalThis` (`windows` 
 #### `askForPreferences`
 
 ```javascript
-async askForPreferences(SelectableCookies selectableCookies) -> Promise<SelectableCookies>
+async askForPreferences(SelectableCookies selectableCookies) -> Promise<SelectableCookiesWithConsents>
 ```
 
 **Description**: Asks browser to return cookie preferences. The browser may or may not show dialog to user (depends on browser settings, site has no control here).
@@ -84,20 +84,22 @@ async askForPreferences(SelectableCookies selectableCookies) -> Promise<Selectab
     * `version`: (Required) A string that contains the version identifier for selectableCookies. When the site passes a selectableCookies object to the askForPreferences function, and the browser has a saved value, it compares the versions. If they differ, the browser will prompt the user for cookie consent again.
     * `welcomeMessage`: (Optional) The string containing the message that will be displayed to the user on the cookie acceptance dialog.
     * `categories`: An array of objects, each representing a cookie category:
-      * `id`: Optional string that should not be interpreted in any way. The browser must retain it and return it to the site as a property of the category. This allows the site to identify categories without relying on name comparison.
+      * `id`: (Optional) String that should not be interpreted in any way. The browser must retain it and return it to the site as a property of the category. This allows the site to identify categories without relying on name comparison.
       * `name`: The category name (e.g., "Required", "Analytics").
       * `description`: (Optional) A description of the cookie category.
       * `required`: (Boolean, Optional) Indicates if the category is essential for the website's operation. Default is `false`.
       * `selectedByDefault`: (Boolean, Optional) Indicates if the category should be pre-selected on Customize screen. Cannot be used if `required` is `true`. Default is `false`.
       * `partners`: (Optional) An array of objects representing third-party companies using cookies in this category:
-        * `id`: Optional string that should not be interpreted in any way. The browser must retain it and return it to the site as a property of the partner. This allows the site to identify partners without relying on name comparison.
+        * `id`: (Optional) String that should not be interpreted in any way. The browser must retain it and return it to the site as a property of the partner. This allows the site to identify partners without relying on name comparison.
         * `name`: The company's name.
         * `domain`: The company's domain.
-        * `description`: A brief description of the company's use of cookies.
+        * `description`: (Optional) A brief description of the company's use of cookies.
         * `required`: (Boolean, Optional) Indicates if the partner is essential for the website's operation. Default is `false`.
         * `selectedByDefault`: (Boolean, Optional) Indicates if the partner should be pre-selected on Customize screen. Cannot be used if `required` is `true`. Default is `false`.
 
-* **Returns**: The `askForPreferences` function returns promise, than resolves a similar to `SelectableCookies` (or even the same) object, with an added `consent` field for each item representing the user's consent decisions for each category or company .
+**Important Note:** If a site has both partner cookies and its own cookies within the same category, it must list itself as a partner with a clearly distinguishing name (e.g., using the site’s domain as the name). This ensures that users clearly understand how they can customize these settings.
+
+* **Returns**: The `askForPreferences` function returns promise, than resolves a similar to `SelectableCookies` object, with an added `consent` field for each item representing the user's consent decisions for each category or company (That's why it is called `SelectableCookiesWithConsents`).
 
 <br><br>
 ***`SelectableCookies` example***
@@ -203,7 +205,9 @@ The returned object contains the user's decisions about cookie consent. It inclu
 
 ### Behavior and Integration Notes
   
-* **API Accessibility**: Similar to the `ethereum` object for blockchain interactions, the `cookiesConsentManager` object is accessible from the `globalThis` (`window`) scope, making it easy for websites to query consent preferences. The browser must ensure, that the object is accessible from IFRAMEs.
+* **API Accessibility**: Similar to the `ethereum` object for blockchain interactions, the `cookiesConsentManager` object is accessible from the `globalThis` (`window`) scope, making it easy for websites to query consent preferences.
+
+* **IFRAME Support**: The cookiesConsentManager object should be accessible from IFRAMEs only if the browser can control access and distinguish between access from the site itself and from an embedded IFRAME, thereby ensuring that the site loaded in the IFRAME cannot obtain the cookie settings of the top-level site.
 
 * **Consent expiration**: Any consent given by the user must expire **at least** once a quarter.
 
